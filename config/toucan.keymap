@@ -25,19 +25,98 @@
     combos {
         compatible = "zmk,combos";
 
+        // --- base-layer text combos. require-prior-idle-ms blocks misfires
+        // during fast typing; layers = <0> keeps them off the other layers. ---
         caps {
             bindings = <&kp CAPS>;
-            key-positions = <16 19>;
+            key-positions = <16 19>;   // F + J (index home keys)
+            layers = <0>;
+            require-prior-idle-ms = <125>;
         };
 
         under {
             bindings = <&kp UNDER>;
-            key-positions = <28 31>;
+            key-positions = <28 31>;   // V + M
+            layers = <0>;
+            require-prior-idle-ms = <125>;
         };
 
         dash {
             bindings = <&kp MINUS>;
-            key-positions = <4 7>;
+            key-positions = <4 7>;     // R + U
+            layers = <0>;
+            require-prior-idle-ms = <125>;
+        };
+
+        // jk -> Esc (vim muscle memory).
+        jk_esc {
+            bindings = <&kp ESCAPE>;
+            key-positions = <19 20>;   // J + K
+            layers = <0>;
+            require-prior-idle-ms = <125>;
+        };
+
+        // Left-hand cut/copy/paste (ported from the Corne): ring+middle finger
+        // pairs across the three rows. Valuable here because the right half is the
+        // Cirque trackpad — edit one-handed with the left while the right points.
+        cut {
+            bindings = <&kp LC(X)>;
+            key-positions = <2 3>;     // W + E (top)
+            layers = <0>;
+            require-prior-idle-ms = <125>;
+        };
+
+        copy {
+            bindings = <&kp LC(C)>;
+            key-positions = <14 15>;   // S + D (home)
+            layers = <0>;
+            require-prior-idle-ms = <125>;
+        };
+
+        paste {
+            bindings = <&kp LC(V)>;
+            key-positions = <26 27>;   // X + C (bottom)
+            layers = <0>;
+            require-prior-idle-ms = <125>;
+        };
+
+        // ? on the two outer thumbs — far apart, never fires by accident.
+        qmark {
+            bindings = <&kp QUESTION>;
+            key-positions = <36 41>;   // ESC thumb + GUI thumb
+            layers = <0>;
+            require-prior-idle-ms = <125>;
+        };
+
+        // --- Bluetooth controls: GATED behind deliberate cross-keyboard combos on
+        // the spaces layer (hold an outer GUI/ESC thumb to reach it). These used to
+        // be LONE keys on the nav thumbs (&bt BT_CLR / &bt BT_NXT) right where you
+        // hold to navigate + point — a stray tap wiped the bond / switched profile.
+        // Now a single tap can never touch BT. ---
+        bt_clear {
+            bindings = <&bt BT_CLR>;
+            key-positions = <25 34>;   // Z + /  (bottom-row outer mirror)
+            layers = <3>;
+            require-prior-idle-ms = <150>;
+            timeout-ms = <75>;
+        };
+
+        bt_next {
+            bindings = <&bt BT_NXT>;
+            key-positions = <1 10>;    // Q + P  (top-row outer mirror)
+            layers = <3>;
+            require-prior-idle-ms = <150>;
+            timeout-ms = <75>;
+        };
+
+        // ZMK Studio unlock — lets the Studio app make LIVE keymap edits over USB
+        // (the left build enables Studio). No-op when Studio isn't connected.
+        studio {
+            bindings = <&studio_unlock>;
+            key-positions = <29 30>;   // B + N (the two inner bottom keys)
+            layers = <3>;
+            require-prior-idle-ms = <150>;
+            timeout-ms = <75>;
         };
     };
 
@@ -83,7 +162,7 @@
 &trans  &kp F1            &kp F2           &kp F3        &kp F4             &trans             &trans  &trans           &kp PG_DN       &kp PG_UP         &trans          &trans
 &trans  &hm LGUI F5  &hm LALT F6  &hm LCTRL F7  &hm LSHIFT F8  &hm LC(V) LC(C)    &trans  &hm RSHIFT LEFT  &hm RCTRL DOWN  &hm RALT UP  &hm LGUI RIGHT  &trans
 &trans  &kp F9            &kp F10          &kp F11       &kp F12            &kp PSCRN          &trans  &trans           &trans          &trans            &trans          &trans
-                                           &bt BT_CLR    &bt BT_NXT         &trans             &trans  &trans     &trans
+                                           &trans        &trans             &trans             &trans  &trans     &trans
             >;
 
             label = "nav";
